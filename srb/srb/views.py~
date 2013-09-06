@@ -1,0 +1,44 @@
+from django.shortcuts import render
+#from django.template.loader import get_template
+#from django.template import Template, Context
+from django.http import Http404,  HttpResponse
+from django.views.generic import TemplateView
+import datetime
+
+class AboutView(TemplateView):
+    template_name = "about.html"
+
+def hello(request):
+    return HttpResponse("hello world")
+
+def display_meta(request):
+    values = request.META.get('REMOTE_ADDR','unknown')
+    #values.sort()
+    #html = []
+    #for k, v in values:
+    # html.append('<tr><td>%s</td><td>%s</td></tr>' % (k, v))
+    return HttpResponse('<table>%s</table>' %  values)
+
+def home_view(request):
+    return HttpResponse("Shits, you're back at the root page")
+
+def current_datetime(request):
+     now = datetime.datetime.now()
+     return render(request, 'current_datetime.html',{'current_date':now} )
+
+###version 1.0
+# def current_datetime(request):
+#     now = datetime.datetime.now()
+#     t = get_template('current_datetime.html')
+#     html = t.render(Context({'current_date':now}))
+#     return HttpResponse(html)
+
+def hours_ahead(request,offset):
+    try:
+       offset = int(offset)
+    except ValueError:
+        raise Http404()
+    dt = datetime.datetime.now() + datetime.timedelta(hours=offset)
+    #assert False
+    return render(request,'hours_ahead.html',{'hour_offset':offset, 'next_time':dt })
+    
