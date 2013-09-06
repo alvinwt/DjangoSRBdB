@@ -1,0 +1,29 @@
+import django_tables2 as tables
+from django_tables2 import SingleTableMixin
+from django_tables2.utils import A
+from django.db.models import Avg
+from models import Interval, Read_alignment
+
+class CoordinateTable(tables.Table):
+    #normRead=tables.Column()
+    class Meta:
+        model = Interval
+        attrs = {"class":"paleblue"}
+ # link column. name = " ", " " = AlignDetailView 
+ 
+class AlignTable(tables.Table):
+    #id= tables.CheckBoxColumn()
+    # table cannot be sorted by normRead
+    normRead = tables.Column(orderable=False)
+    id = tables.LinkColumn('AlignDetailView',args=[A('pk')])
+
+    class Meta:
+        model = Read_alignment
+        sequence = ('id','chr','start','stop','sequence','read_counts','genomic_hits','strand','library_id')
+        attrs = {"class":"paleblue"}
+        
+
+class DetailTable(SingleTableMixin,tables.Table):
+    name = tables.Column()
+    data = {}
+    
