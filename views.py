@@ -1,6 +1,6 @@
 #from django.template import Template, Context
 from django.db.models import Avg
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, render_to_response
 from django.http import Http404,  HttpResponse
 from django.views.generic import ListView, DetailView, TemplateView
 from srb.models import Library_Sequencing_Run, Library, Interval, Read_alignment
@@ -13,7 +13,7 @@ from matplotlib.backends.backend_agg import FigureCanvasAgg as FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.dates import DateFormatter
 
-from srb.tables import CoordinateTable, AlignTable
+from srb.tables import IntervalTable, AlignTable
 from django_tables2 import SingleTableView
 from numpy.random import normal
 import matplotlib.pyplot as plt

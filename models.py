@@ -3,7 +3,7 @@
 from django.db import models
 from django.db.models import Avg
 from decimal import Decimal   
-
+import django_filters
 
 class Interval(models.Model):
     # mapped intervals and locations can be used to link to USCS genome browser
@@ -14,7 +14,12 @@ class Interval(models.Model):
     IntervalSize= models.IntegerField(max_length=45)
     IntervalSerialNumber = models.IntegerField(max_length=45)
     Link= models.URLField(max_length=200)
-
+    
+class IntervalFilter(django_filters.FilterSet):
+    class Meta:
+        model = Interval
+        fields = ['IntervalSerialNumber','start','stop','NeatName']
+    
     @property
     def interval (self):
         return '%s:%s,%s' %(self.chr,str(self.start+1),str(self.stop))
@@ -99,11 +104,9 @@ class Read_alignment(models.Model):
     start = models.IntegerField(max_length=45)
     stop = models.IntegerField(max_length=45)
     strand = models.CharField(max_length=5, choices={('+','+'),('-','-')})
-    normRead=models.DecimalField(max_digits=10,decimal_places=4)
     big2catrenormRPmirpre = models.DecimalField(max_digits=10, decimal_places=4,blank=True)
     AGO1IPoverTotalRNA = models.DecimalField(max_digits=10,decimal_places=4, blank = True)
-    
-    
+
     #"V063V0632renormRPmirpreadd" to "V066V0662renormRPmirpreadd" =normreads with diff headings for each lib?
     #aligned_interval = models.ForeignKey(Interval)
     # seq_run_id =  models.ForeignKey(Sequencing_Run)

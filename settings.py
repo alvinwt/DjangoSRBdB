@@ -139,8 +139,8 @@ TEMPLATE_DIRS = (
 
 CMS_TEMPLATES = (
     ('srb/template_1.html', 'Template One'),
-    ('srb/align_data.html','Align')
-# ('template_2.html', 'Template Two'),
+    ('srb/align_data.html','Align'),
+    ('srb/int_data.html', 'Interval')
 )
 
 INSTALLED_APPS = (
@@ -167,6 +167,7 @@ INSTALLED_APPS = (
      'menus',
      'sekizai',
      'djangocms_table',
+     'GChartWrapper.charts',
      'cms.plugins.file',
 'cms.plugins.flash',
 'cms.plugins.googlemap',
