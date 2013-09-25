@@ -1,0 +1,11 @@
+{% block input %}
+<div class="input_area box-flex1">
+{{ cell.input | highlight2html }}
+</div>
+{%- endblock input %}
+
+{% block input_group -%}
+<div class="input hbox">
+{{ super() }}
+</div>
+{% endblock input_group %}
