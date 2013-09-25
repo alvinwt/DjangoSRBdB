@@ -15,18 +15,13 @@ class Interval(models.Model):
     IntervalSerialNumber = models.IntegerField(max_length=45)
     Link= models.URLField(max_length=200)
     
-class IntervalFilter(django_filters.FilterSet):
-    class Meta:
-        model = Interval
-        fields = ['IntervalSerialNumber','start','stop','NeatName']
-    
-    @property
-    def interval (self):
-        return '%s:%s,%s' %(self.chr,str(self.start+1),str(self.stop))
+    # @property
+    # def interval (self):
+    #     return '%s:%s,%s' %(self.chr,str(self.start+1),str(self.stop))
 
     def __unicode__(self):
         return u'%s:%s-%s' %(self.chr,str(self.start),str(self.stop))
-
+    
 class Library(models.Model):
     #library contains information about each library, called upon when needed for comparison.
     library_id = models.CharField(max_length=16,primary_key=True)
@@ -128,4 +123,26 @@ class Read_alignment(models.Model):
         ### wtCS = Read_alignment.objects.filter(library__contains=lib)
         wtCS_mapped = int(86837856) / 10^6
         normalized_count = (Decimal(self.read_counts) / Decimal(self.genomic_hits)) / wtCS_mapped
-        return '%e' % (normalized_count)           
+        return '%e' % (normalized_count)
+
+class IntervalFilter(django_filters.FilterSet):
+
+    # def __init__(self,*args,**kwargs):
+    #     super(IntervalFilter,self).__init__(*args,**kwargs)
+  
+    df= django_filters
+    start = df.RangeFilter()
+    stop = df.RangeFilter()
+    
+    class Meta:
+        model = Interval
+        fields = ['NeatName','start','stop']
+        #order_by = (('NeatName', 'Interval'),
+        #            ('start','Start range'),
+        #            ('stop','Stop Range'))
+
+class AlignFilter(django_filters.FilterSet):
+
+    class Meta:
+        model = Read_alignment
+        fields = ['chr','start','stop','read_counts']

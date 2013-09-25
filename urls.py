@@ -2,8 +2,8 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from rest_framework.routers import DefaultRouter
-from all_data_view import align, view
-from home_view import HomeView, interval, Int_filter
+from all_data_view import align, view, align_filter
+from home_view import interval, int_filter, search_form
 from detail_view import AlignDetailView
 from search_view import  AlignRetrieveAPIView, AlignViewSet
 
@@ -23,7 +23,7 @@ router = DefaultRouter()
 router.register(r'align-detail', AlignViewSet)
 urlpatterns = patterns('',
                        (r'^admin/', include(admin.site.urls)),
-                      url(r'^home/$',HomeView.as_view(),name='home'),
+# url(r'^home/$',HomeView.as_view(),name='home'),
                       url(r'^api-auth/', include('rest_framework.urls',namespace='rest_framework')),
                       url (r'^id/$',LibraryListView.as_view(),name='library_list'),
                       url(r'^align/$',align,name="all_data"),                    
@@ -32,7 +32,9 @@ urlpatterns = patterns('',
                       url(r'^(?P<pk>\d+)/align/$', AlignDetailView.as_view(), name='AlignDetailView', ),
                       url(r'^api/$', AlignListAPIView.as_view(), name='list'),
                       url(r'^interval/$',interval, name='interval'),
-                      url(r'^interval/$',Int_filter, name='intfil'),
+                      url(r'^interval/fil/$',int_filter,name='int_filter'),
+                       url(r'^interval/aln/$',align_filter,name='align_filter'),
+# url(r'^interval/$',search_form),
 # url(r'^api/(?P<pk>\d+)/$', AlignRetrieveAPIView.as_view(), name='retrieve'),
 #url(r'^api-detail/$', AlignViewSet.as_view(), name='align-detail'),
 url(r'^', include(router.urls)),

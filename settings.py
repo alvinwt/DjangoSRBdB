@@ -9,6 +9,9 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+ENCRYPTED_FIELD_KEYS_DIR = ()
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
@@ -35,7 +38,7 @@ TIME_ZONE = 'Asia/Singapore'
 
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en'
 
 SITE_ID = 1
 
@@ -102,8 +105,9 @@ TEMPLATE_LOADERS = (
 TEMPLATE_CONTEXT_PROCESSORS = ('django.core.context_processors.request',
                                'django.contrib.auth.context_processors.auth',
                                'django.core.context_processors.static',
-                               'django.contrib.auth.context_processors.auth','cms.context_processors.media',
-    'sekizai.context_processors.sekizai',
+                               'django.contrib.auth.context_processors.auth',
+                               'cms.context_processors.media',
+                               'sekizai.context_processors.sekizai',
     
     )
 
@@ -140,7 +144,8 @@ TEMPLATE_DIRS = (
 CMS_TEMPLATES = (
     ('srb/template_1.html', 'Template One'),
     ('srb/align_data.html','Align'),
-    ('srb/int_data.html', 'Interval')
+    ('srb/int_data.html', 'Interval'),
+    ('srb/filter.html', 'Search')
 )
 
 INSTALLED_APPS = (
@@ -169,6 +174,7 @@ INSTALLED_APPS = (
      'djangocms_table',
      'GChartWrapper.charts',
      'cms.plugins.file',
+     'django_filters',
 'cms.plugins.flash',
 'cms.plugins.googlemap',
 'cms.plugins.link',
