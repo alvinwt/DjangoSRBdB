@@ -19,8 +19,9 @@ class AlignTable(tables.Table):
 
     class Meta:
         model = Read_alignment
-        sequence = ('id','chr','start','stop','sequence','read_counts','genomic_hits','strand','normRead','library_id')
+        sequence = ('id','chr','start','stop','sequence','read_counts','genomic_hits','strand','normReads','intervalName',)
         attrs = {"class":"paleblue"}
+        exclude = ('normRead',)
         
 
 class DetailTable(SingleTableMixin,tables.Table):

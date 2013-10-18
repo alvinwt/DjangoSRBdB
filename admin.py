@@ -10,7 +10,7 @@ class IntAdmin(admin.ModelAdmin):
     search_fields =('NeatName', 'IntervalSerialNumber',)
 
 class AlignmentAdmin(admin.ModelAdmin):
-    list_display=('chr','start','stop','sequence','read_counts','genomic_hits','strand','library_id')
+    list_display=('chr','start','stop','sequence','read_counts','genomic_hits','strand','library_id',)
     # ordering=('avg_counts')
 #class BookAdmin(admin.ModelAdmin):
 #     list_display = ('title', 'publisher', 'publication_date')

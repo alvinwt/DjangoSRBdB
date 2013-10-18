@@ -69,7 +69,7 @@ class AlignDetailView(SingleTableMixin,DetailView):
         bamFile= pysam.Samfile('/home/alvin/Dropbox/SmallRNABiogenesis/testdata/V063V0632.sorted.bam', 'rb')
         bam = []
         for pile in bamFile.pileup('chr3L',self.object.start,self.object.stop+50):
-            bam.append([pile.pos,pile.n])
+            bam.append([pile.pos,pile.n,int(pile.n)-5])
         bamFile.close
         return bam
 
