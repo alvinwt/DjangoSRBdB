@@ -3,49 +3,40 @@
 {% load render_table from django_tables2 %}
 {% load staticfiles %}
 {% block content %}
-<!doctype html>
+<!doctype html> 
 <html>
     <head>
          <style>
-   table {border-collapse:collapse; table-layout:auto; width:355px;}
-   table td {border:solid 1px ; width:100px; word-wrap:break-word;}
+   <link rel="stylesheet"
+    href="\static\django_tables2/themes/paleblue/css/screen.css" />
    </style>
     </head>
     <body>
-    <link rel="stylesheet"
+       <CAPTION>Interval Data for Interval {{interval.pk}}</CAPTION>
+<TABLE>
+<link rel="stylesheet"
     href="\static\django_tables2/themes/paleblue/css/screen.css" />
-
-   
-    
-      <TABLE>
-    <CAPTION>Read_alignment Data for Candidate {{read_alignment.id}}</CAPTION>
-
-
-<table border="1" bordercolor="#000000" style="background-color:#FFFFFF" width="90%" cellpadding="3" cellspacing="3">
+<table border="1" bordercolor="#000000" style="tbackground-color:#FFFFFF" width="90%" cellpadding="3" cellspacing="3">
     <TR class="even">
-      <td>Id</td>
+      <td>Id</td><td>Name</td>
 		<td>Chromosome</td>
 		<td>Start</td>
 		<td>Stop</td>
-                <td>Strand</td>
-		<td>Normalized Reads</td>
-		<td>Read Count</td>
-		<td>Sequence </td>
+                <td>UCSC Link</td>
+ 
 	</tr>
 	<tr><td>
-        {{read_alignment.id}}</TD><TD>    
-        {{read_alignment.chr}}</TD><TD>
-        {{read_alignment.start}}</TD><TD>
-        {{read_alignment.stop}} </TD><TD>
-        {{read_alignment.strand}} </TD><TD>
-        {{read_alignment.normReads}} </TD><TD>
-        {{read_alignment.read_counts}}</TD><TD>
-        {{read_alignment.sequence}}</TR>
+        {{interval.IntervalSerialNumber}}</TD><TD>
+        {{interval.pk}}</TD><TD>    
+        {{interval.chr}}</TD><TD>
+        {{interval.start}}</TD><TD>
+        {{interval.stop}} </TD><TD>
+         {{interval.Link}} </TD>
   </TABLE>
-{% block table %}
- {% render_table detail %}
-        {% endblock table %}
-     <applet  code="VARNA.class" codebase="\static\" archive={% static "VARNA.jar" %} width="550" height="350"/>
+
+{% render_table interval_detail %}
+
+<applet  code="VARNA.class" codebase="\static\" archive={% static "VARNA.jar" %} width="550" height="350"/>
  <param name="sequenceDBN"  value="{{seq}}"/>
   <param name="structureDBN" value="...............(((((....(((..(((.....)))))))))))...."/>
   <param name="colorMap" value="2.1,3.0,7.4,3.1,1.4,0.8,9.5,1.5,
@@ -106,7 +97,7 @@
      'options': {
        // Use the same chart area width as the control for axis alignment.
        'chartArea': {'height': '80%', 'width': '90%'},
-        'title':'Read Counts per Genomic location at {{read_alignment.chr}}:{{read_alignment.start}}-{{read_alignment.stop}}',
+        'title':'Read Counts per Genomic location at {{interval.chr}}:{{interval.start}}-{{interval.stop}}',
        'hAxis': {'minorGridlines.count':5, 'slantedText':
      true,'title':'Postion.','textPosition': 'in'}, 
        'vAxis': {'viewWindow': {'min': 0, 'max': '90%' },'title':'Read Counts'},
@@ -141,7 +132,9 @@
 	<tr>
 	<td><div><pre>{{ msa }}</pre></div>
 	</tr>
+      
      </table>  
+
 </html>
 
 {% endblock %}
