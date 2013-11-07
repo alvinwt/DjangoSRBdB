@@ -10,9 +10,16 @@ class AlignSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('chr','start','stop','NormRead')
     
 class AlignViewSet(viewsets.ReadOnlyModelViewSet):
+<<<<<<< Updated upstream
     queryset = Read_alignment.objects.all()
     serializer_class = AlignSerializer
 
+=======
+    model = Read_alignment
+    serializer_class = AlignSerializer
+    queryset = Read_alignment.objects.select_related().filter(chr='chr3L')
+    
+>>>>>>> Stashed changes
 class LibrarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Library
@@ -21,3 +28,4 @@ class LibrarySerializer(serializers.ModelSerializer):
 class AlignRetrieveAPIView(RetrieveUpdateAPIView):
     model = Read_alignment
     serializer_class = AlignSerializer
+    queryset = Read_alignment.objects.select_related().filter(chr='chr3L')

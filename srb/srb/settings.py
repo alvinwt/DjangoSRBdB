@@ -129,9 +129,11 @@ ROOT_URLCONF = 'srb.urls'
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'srb.wsgi.application'
 
+PROJECT_PATH=("/home/alvin/Dropbox/FYP/Django/mysite/srb", os.path.join(os.path.dirname(__file__),'srb'),
+             )
 
 TEMPLATE_DIRS = (
-         "/home/alvin/Dropbox/FYP/Django/Templates", os.path.join(os.path.dirname(__file__),'templates'),
+         "/home/alvin/Dropbox/FYP/Django/Templates", os.path.join(os.path.dirname(__file__),'templates'), "/home/alvin/Dropbox/FYP/Django/mysite/srb",
 
 # Always use forward slashes, even on Windows.
     # Don't forget to use absolute paths, not relative paths.
@@ -139,8 +141,15 @@ TEMPLATE_DIRS = (
 
 CMS_TEMPLATES = (
     ('srb/template_1.html', 'Template One'),
+<<<<<<< Updated upstream
     ('srb/align_data.html','Align')
 # ('template_2.html', 'Template Two'),
+=======
+    ('srb/align_data.html','Align'),
+    ('srb/int_data.html', 'Interval'),
+    ('srb/filter.html', 'Search'),
+    ("media/themes/blackandwhite/templates/index.html",'black'),
+>>>>>>> Stashed changes
 )
 
 INSTALLED_APPS = (
@@ -156,24 +165,26 @@ INSTALLED_APPS = (
      'django.contrib.admindocs',
      'debug_toolbar',
      'django_extensions',
-     'srb',
-     'csvimport',
      'south',
      'django_tables2',
      'webplotlib',
      'rest_framework',
-     'cms',
      'mptt',
      'menus',
      'sekizai',
      'djangocms_table',
      'cms.plugins.file',
 'cms.plugins.flash',
+'cms.plugins.snippet',
 'cms.plugins.googlemap',
 'cms.plugins.link',
 'cms.plugins.picture',
 'cms.plugins.teaser',
 'cms.plugins.text',
+ 'csvimport',
+ 'plugins',
+   'srb',
+   'cms',
    )
 
 DEBUG_TOOLBAR_PANELS = (
