@@ -181,7 +181,16 @@ INSTALLED_APPS = (
 'cms.plugins.picture',
 'cms.plugins.teaser',
 'cms.plugins.text',
+'dbbackup'
    )
+
+SOUTH_TESTS_MIGRATE=False
+SKIP_SOUTH_TESTS= True
+
+DBBACKUP_STORAGE = 'dbbackup.storage.dropbox_storage'
+DBBACKUP_TOKENS_FILEPATH = '/home/alvin/tokens'
+DBBACKUP_DROPBOX_APP_KEY = '1h717o0tvdtn3nd'
+DBBACKUP_DROPBOX_APP_SECRET = 'pkuw8m9ymgf1473'
 
 DEBUG_TOOLBAR_PANELS = (
            'debug_toolbar.panels.version.VersionDebugPanel',

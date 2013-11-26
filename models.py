@@ -12,7 +12,10 @@ class Interval(models.Model):
     stop= models.IntegerField(max_length=15)
     NeatName= models.CharField(max_length=100,primary_key=True)
     IntervalSize= models.IntegerField(max_length=45)
-    IntervalSerialNumber = models.IntegerField(max_length=45)
+    IntervalSerialNumber = models.SlugField(max_length=45)
+    Structure= models.CharField(max_length=200, blank=True)
+    Annotations = models.TextField(max_length=1000,blank=True)
+    Tags= models.TextField(max_length=100,blank=True)
     Link= models.URLField(max_length=200)
     
     # @property
@@ -109,10 +112,11 @@ class Read_alignment(models.Model):
     start = models.IntegerField(max_length=45)
     stop = models.IntegerField(max_length=45)
     strand = models.CharField(max_length=5, choices={('+','+'),('-','-')})
-    big2catrenormRPmirpre = models.DecimalField(max_digits=19,decimal_places=15,blank=True)
-    AGO1IPoverTotalRNA = models.DecimalField(max_digits=19,decimal_places=15,blank=True)
-    normReads =models.DecimalField(max_digits=19,decimal_places=15,blank=True)
-    intervalName = models.CharField(max_length=150,blank=True)
+    big2catrenormRPmirpre = models.DecimalField(max_digits=19,decimal_places=15,null=True)
+    AGO1IPoverTotalRNA = models.DecimalField(max_digits=19,decimal_places=15,null=True)
+    normReads =models.DecimalField(max_digits=19,decimal_places=15,null=True)
+    intervalName = models.ForeignKey(Interval)
+    structure= models.CharField(max_length=1000,null=True)
     IntName= IntNamed()
     #IntName = models.ForeignKey(Interval,to_field='NeatName')
     objects = models.Manager()
@@ -156,10 +160,12 @@ class IntervalFilter(django_filters.FilterSet):
     start = df.RangeFilter()
     stop = df.RangeFilter()
     chr =df.AllValuesFilter()
-
+    Tags =df.AllValuesFilter()
+    Annotations=df.AllValuesFilter()
+    # Annotations=df.CharFilter()
     class Meta:
         model = Interval
-        fields = ['NeatName','chr','start','stop']
+        fields = ['NeatName','chr','start','stop','Tags','Annotations']
         #order_by = (('NeatName', 'Interval'),
         #            ('start','Start range'),
         #            ('stop','Stop Range'))
@@ -170,6 +176,7 @@ class AlignFilter(django_filters.FilterSet):
      stop = df.RangeFilter()
      chr =df.AllValuesFilter()
      normReads = df.RangeFilter()
+     # intervalName=df.AllValuesFilter()
      
      class Meta:
         model = Read_alignment
