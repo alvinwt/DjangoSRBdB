@@ -6,8 +6,8 @@ class LibAdmin(admin.ModelAdmin):
     # search_fields = ('library_id')
 
 class IntAdmin(admin.ModelAdmin):
-    list_display = ('IntervalSerialNumber','NeatName', 'chr','start','stop','IntervalSize','Link')
-    search_fields =('NeatName', 'IntervalSerialNumber',)
+    list_display = ('IntervalSerialNumber','NeatName', 'chr','start','stop','IntervalSize','Link','Tags','Annotations')
+    search_fields =('NeatName', 'IntervalSerialNumber','Tags','Annotations')
 
 class AlignmentAdmin(admin.ModelAdmin):
     list_display=('chr','start','stop','sequence','read_counts','genomic_hits','strand','library_id')

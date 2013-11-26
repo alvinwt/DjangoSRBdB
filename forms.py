@@ -7,4 +7,4 @@ class MyModelForm(ModelForm):
         self.fields['chr'].min_length= 1
     class Meta:
         model = Interval
-        fields = ('chr','start','stop','NeatName','IntervalSerialNumber',)
+        fields = ('chr','start','stop','NeatName','IntervalSerialNumber','Tags','Annotations')

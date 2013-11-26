@@ -1,5 +1,5 @@
 from django.views.generic import DetailView
-from srb.models import Read_alignment
+from .models import Read_alignment, Interval
 from reportlab.pdfgen import canvas
 from django.http import HttpResponse
 #from GChartWrapper import *
@@ -18,21 +18,31 @@ from graph import plotResults
 
 from django.shortcuts import render
 from django_tables2 import RequestConfig, SingleTableMixin
-from tables import AlignTable, DetailTable
+from tables import DetailTable
 import pysam
 
+
+
 class AlignDetailView(SingleTableMixin,DetailView):
-    model = Read_alignment
+    model= Read_alignment
     table_class = DetailTable
-    context_table_name = 'detail' 
-    
-    def get_sum(self):
-        sum = self.object.read_counts +self.object.read_counts
-        return sum
+    context_table_name = 'detail'
+
+    def get_table_data (self):
+        table_data= Read_alignment.objects.filter(intervalName=self.object.intervalName)
+        return table_data
+
+    # def get_sum(self):
+    #     sum = self.object.read_counts +self.object.read_counts
+    #     return sum
 
     def get_seq(self):
-        stt = self.object.start 
-        stp = self.object.stop +20 
+        if Interval.objects.filter(NeatName=self.object.intervalName).exists():
+            stt = self.object.start 
+            stp = self.object.stop +20
+        else:
+            stt = self.object.intervalName.start
+            stp = self.object.intervalName.stop
         #still hardcoded! needs to be static*
         for seq_record in SeqIO.parse('/home/alvin/Dropbox/FYP/Django/mysite/srb/media/dmel-3L-chromosome-r5.52.fasta','fasta'):
             seq = seq_record.seq
@@ -62,13 +72,40 @@ class AlignDetailView(SingleTableMixin,DetailView):
         stdout = re.sub(r'>\d+','',stdout)
         return stdout
 
+    def get_alignment(self):
+        self = self.object
+        if self.intervalName == False:
+            stt = self.start 
+            stp = self.stop +20
+        else:
+            stt = self.intervalName.start
+            stp = self.intervalName.stop
+            
+        alignment = Read_alignment.objects.filter(chr= self.chr, start__gte= stt , stop__lte=stp,strand=self.strand)
+        string =""
+        for i in alignment:
+            pretty = '%s \t\t %s\n' % (i.sequence, str(i.read_counts))
+            cord = int(i.start)-stt
+            if cord >= 1:
+               string += cord * ' ' + pretty 
+            else:
+               string += pretty
+        return string
+                
     # gets pileup from BAM file to give readcounts per Nt. data is then return as a list in numpy array for plotting in google charts
     # nb: chr reference can be '2L' or coded depending on BAM file. consider splitting string into chr | 2L before coding
     #needs testing 
     def get_graph(self):
         bamFile= pysam.Samfile('/home/alvin/Dropbox/SmallRNABiogenesis/testdata/V063V0632.sorted.bam', 'rb')
         bam = []
-        for pile in bamFile.pileup('chr3L',self.object.start,self.object.stop+50):
+        self =self.object
+        if self.intervalName == False:
+            stt = self.start 
+            stp = self.stop +20
+        else:
+            stt = self.intervalName.start
+            stp = self.intervalName.stop
+        for pile in bamFile.pileup('chr3L',stt,stp):
             bam.append([pile.pos,pile.n])
         bamFile.close
         return bam
@@ -94,9 +131,9 @@ class AlignDetailView(SingleTableMixin,DetailView):
      
     def get_context_data(self, **kwargs):
         context = super(AlignDetailView,self).get_context_data(**kwargs)
-        context['sum'] = self.get_sum()
+        #context['sum'] = self.get_sum()
         context['seq'] = self.get_seq()
-        context['msa'] = self.get_mapping()
+        context['msa'] = self.get_alignment()
         context['cts'] = self.get_read_counts()
         context['graph'] = self.get_graph()
         return context
