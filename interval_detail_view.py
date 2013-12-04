@@ -79,6 +79,31 @@ class IntervalDetailView(SingleTableMixin,DetailView):
             #cord = "'" + str(cords[i]) +"'"
             graph_list.append([str(cords[i]), pile[i]])
         return graph_list
+    def get_graph1(self):
+        self=self.object
+        reads= Read_alignment.objects.filter(intervalName=self)
+        #print self.start 
+        ### Draw the matrix
+        table = {}
+        list = []
+        for i in range(self.start,self.stop+1):
+            table[i]=int(0)
+        for i in reads:
+            row = [i.start, i.stop, i.read_counts]
+            for j in range(row[0],row[1]):
+                try:
+                    if j in table:
+                        table[j] = table[j] + row[2]
+                except:
+                    print "index not found"
+
+        for key, value in table.iteritems():
+            temp = [key,int(value)]
+            list.append(temp)
+        list= sorted(list)
+        for i in list:
+            i[0]=str(i[0])
+        return list
 
     def get_read_counts(self):
         self= self.object
@@ -93,7 +118,7 @@ class IntervalDetailView(SingleTableMixin,DetailView):
         context = super(IntervalDetailView,self).get_context_data(**kwargs)
         context['seq'] = self.get_seq()
         context['msa'] = self.get_msa()
-        context['graph']= self.get_graph()
+        context['graph']= self.get_graph1()
         context['counts']=self.get_read_counts()
         return context
     
